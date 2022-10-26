@@ -22,7 +22,8 @@ jobs:
         # run: git clone https://github.com/teamManagement/team-client-server.git
         uses: actions/checkout@v3
         with:
-          repository: teamManagement/team-client-server.git
+          repository: teamManagement/team-client-server
+          token: ${{ secrets.ACCESS_TOKEN }}
           # token: ${{ secrets.GH_PAT }}
           ref: main
           path: team-client-server
