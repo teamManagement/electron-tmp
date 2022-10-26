@@ -1,8 +1,8 @@
 name: Build Teamwork App
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*.*.*'
       
 jobs:
   build:
