@@ -22,7 +22,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
-          git clone https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/teamManagement/team-client-server.git
+          wget https://github.com/teamManagement/team-client-server/archive/refs/heads/main.zip
         
         # uses: actions/checkout@v1 
         # with:
