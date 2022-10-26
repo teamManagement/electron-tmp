@@ -1,9 +1,14 @@
 name: Build Teamwork App
+# on:
+#   push:
+#     tags:
+#       - 'v*.*.*'
+
 on:
   push:
-    tags:
-      - 'v*.*.*'
-      
+    branches:
+      - main
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -11,55 +16,77 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-latest]
-        # os: [windows-latest, macos-latest, ubuntu-latest]
-        
+
     steps:
-      - name: checkout git repository
+      - name: checkout client server
         uses: actions/checkout@v3
+        with:
+          repository: teamManagement/team-core-server
+
+      - name: setup go env
+        uses: actions/setup-go@v3
+        with:
+          go-version: '^1.19'
+      
+      - name: build client server
+        run: go build -o teamwork-client-server main.go
+      
+# jobs:
+#   build:
+#     runs-on: ${{ matrix.os }}
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         os: [macos-latest, ubuntu-latest]
+#         # os: [windows-latest, macos-latest, ubuntu-latest]
         
-      - name: Install Node,js
-        uses: actions/setup-node@v3.0.0
-        with:
-          node-version: "16"
-
-      - name: Install yarn
-        run: npm i -g yarn
-      
-      - name: Install Dependencies
-        run: yarn
-
-      - name: Build for MacOs
-        if: matrix.os == 'macos-latest'
-        run: yarn build:mac
-
-      - name: Build for Linux
-        if: matrix.os == 'ubuntu-latest'
-        run: yarn build:linux
-
-      - name: Build for Windows
-        if: matrix.os == 'windows-latest'
-        run: yarn build:win
-      
-      - name: Upload build result
-        uses: actions/upload-artifact@v3
-        with: 
-          name: build-result
-          path: dist
-      
-  release:
-    name: Download back the built software and release them
-
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Download back the built software
-        uses: actions/download-artifact@v3
-        with:
-          name: build-result
+#     steps:
+#       - name: checkout git repository
+#         uses: actions/checkout@v3
         
-      - name: Release software
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "*.deb,*.dmg"
-          token: ${{ secrets.GITHUB_TOKEN }}
+#       - name: Install Node,js
+#         uses: actions/setup-node@v3.0.0
+#         with:
+#           node-version: "16"
+
+#       - name: Install yarn
+#         run: npm i -g yarn
+      
+#       - name: Install Dependencies
+#         run: yarn
+
+#       - name: Build for MacOs
+#         if: matrix.os == 'macos-latest'
+#         run: yarn build:mac
+
+#       - name: Build for Linux
+#         if: matrix.os == 'ubuntu-latest'
+#         run: yarn build:linux
+
+#       - name: Build for Windows
+#         if: matrix.os == 'windows-latest'
+#         run: yarn build:win
+      
+#       - name: Upload build result
+#         uses: actions/upload-artifact@v3
+#         with: 
+#           name: build-result
+#           path: dist
+      
+#   release:
+#     name: Download back the built software and release them
+
+#     needs: build
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Download back the built software
+#         uses: actions/download-artifact@v3
+#         with:
+#           name: build-result
+        
+#       - name: Release software
+#         uses: ncipollo/release-action@v1
+#         with:
+#           artifacts: "*.deb,*.dmg"
+#           token: ${{ secrets.GITHUB_TOKEN }}
