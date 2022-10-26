@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest]
+        os: [macos-latest, ubuntu-latest]
         # os: [windows-latest, macos-latest, ubuntu-latest]
         
     steps:
@@ -40,8 +40,26 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: yarn build:win
       
-      - name: release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: "dist/**"
+      - name: Upload build result
+        uses: actions/upload-artifact@3
+        with: 
+          name: build-result
+          path: dist
+      
+    release:
+      name: Download back the built software and release them
+
+      needs: build
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Download back the built software
+          uses: actions/download-artifact@3
+          with:
+            name: build-result
+          
+        - name: Release software
+          uses: ncipollo/release-action@v1
+          with:
+            artifacts: "*.deb,*.dmg"
+            token: ${{ secrets.GITHUB_TOKEN }}
