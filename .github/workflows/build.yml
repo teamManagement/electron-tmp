@@ -23,6 +23,7 @@ jobs:
         with:
           repository: teamManagement/team-client-server
           # token: ${{ secrets.GH_PAT }}
+          ref: main
           path: team-client-server
 
       - name: setup go env
