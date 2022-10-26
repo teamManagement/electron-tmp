@@ -46,20 +46,20 @@ jobs:
           name: build-result
           path: dist
       
-    release:
-      name: Download back the built software and release them
+  release:
+    name: Download back the built software and release them
 
-      needs: build
-      runs-on: ubuntu-latest
+    needs: build
+    runs-on: ubuntu-latest
 
-      steps:
-        - name: Download back the built software
-          uses: actions/download-artifact@3
-          with:
-            name: build-result
-          
-        - name: Release software
-          uses: ncipollo/release-action@v1
-          with:
-            artifacts: "*.deb,*.dmg"
-            token: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Download back the built software
+        uses: actions/download-artifact@3
+        with:
+          name: build-result
+        
+      - name: Release software
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "*.deb,*.dmg"
+          token: ${{ secrets.GITHUB_TOKEN }}
