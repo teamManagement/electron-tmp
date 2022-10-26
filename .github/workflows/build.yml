@@ -19,11 +19,15 @@ jobs:
 
     steps:
       - name: checkout client server
-        # run: git clone https://github.com/teamManagement/team-client-server.git
-        uses: actions/checkout@v1 
-        with:
-          repository: teamManagement/team-client-server
-          token: ${{ secrets.ACCESS_TOKEN }}
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: |
+          git clone https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/teamManagement/team-client-server.git
+        
+        # uses: actions/checkout@v1 
+        # with:
+        #   repository: teamManagement/team-client-server
+        #   token: ${{ secrets.ACCESS_TOKEN }}
           # token: ${{ secrets.GH_PAT }}
           # ref: main
           # path: team-client-server
