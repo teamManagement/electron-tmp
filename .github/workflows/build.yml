@@ -20,3 +20,9 @@ jobs:
         uses: actions/setup-node@v3.0.0
         with:
           node-version: "16"
+
+      - name: Install yarn
+        run: npm i -g yarn
+      
+      - name: Install Dependencies
+        run: yarn
