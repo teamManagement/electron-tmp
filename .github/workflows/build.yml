@@ -41,7 +41,7 @@ jobs:
         run: yarn build:win
       
       - name: Upload build result
-        uses: actions/upload-artifact@3
+        uses: actions/upload-artifact@v3
         with: 
           name: build-result
           path: dist
@@ -54,7 +54,7 @@ jobs:
 
     steps:
       - name: Download back the built software
-        uses: actions/download-artifact@3
+        uses: actions/download-artifact@v3
         with:
           name: build-result
         
