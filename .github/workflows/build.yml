@@ -21,7 +21,9 @@ jobs:
       - name: checkout client server
         uses: actions/checkout@v3
         with:
-          repository: teamManagement/team-core-server
+          repository: teamManagement/team-client-server
+          token: ${{ secrets.GH_PAT }}
+          path: team-client-server
 
       - name: setup go env
         uses: actions/setup-go@v3
