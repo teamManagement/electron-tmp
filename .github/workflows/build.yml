@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: teamManagement/team-client-server
-          token: ${{ secrets.GH_PAT }}
+          # token: ${{ secrets.GH_PAT }}
           path: team-client-server
 
       - name: setup go env
