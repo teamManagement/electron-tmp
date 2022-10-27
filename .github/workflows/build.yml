@@ -47,7 +47,9 @@ jobs:
       - name: build client server for win
         if: matrix.os == 'windows-latest'
         working-directory: ./client-server
-        run: CGO_ENABLED=1 go build -o teamwork-client-server-win.exe main.go
+        env:
+          CGO_ENABLED: 1
+        run: go build -o teamwork-client-server-win.exe main.go
 
       - name: Upload linux client server and mkcert bin
         uses: actions/upload-artifact@v3
