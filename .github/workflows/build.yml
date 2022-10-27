@@ -52,7 +52,6 @@ jobs:
       - name: Upload linux client server and mkcert bin
         uses: actions/upload-artifact@v3
         if: matrix.os == 'ubuntu-latest'
-        working-directory: ./client-server
         with: 
           name: build-linux-result
           path: |
@@ -62,7 +61,6 @@ jobs:
       - name: Upload windows client server and mkcert bin
         uses: actions/upload-artifact@v3
         if: matrix.os == 'windows-latest'
-        working-directory: ./client-server
         with: 
           name: build-windows-result
           path: |
