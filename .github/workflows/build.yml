@@ -57,8 +57,8 @@ jobs:
         with: 
           name: build-linux-result
           path: |
-            teamwork-client-server-linux
-            externalProgram/linux/*
+            ./client-server/teamwork-client-server-linux
+            ./client-server/externalProgram/linux/*
 
       - name: Upload windows client server and mkcert bin
         uses: actions/upload-artifact@v3
@@ -66,8 +66,8 @@ jobs:
         with: 
           name: build-windows-result
           path: |
-            teamwork-client-server-win.exe
-            externalProgram/win/*
+            ./client-server/teamwork-client-server-win.exe
+            ./client-server/externalProgram/win/*
 
 
 
