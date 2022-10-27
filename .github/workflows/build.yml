@@ -109,9 +109,9 @@ jobs:
       - name: copy process
         run: |
           cp ./process/win/teamwork-client-server-win.exe ./client-view/process/win/
-          cp ./process/win/externalProgram/mkcert.exe ./client-view/process/win/
+          cp ./process/win/externalProgram/win/mkcert.exe ./client-view/process/win/
           cp ./process/linux/teamwork-client-server-win.exe ./client-view/process/linux/
-          cp ./process/linux/externalProgram/mkcert.exe ./client-view/process/linux/
+          cp ./process/linux/externalProgram/linux/mkcert.exe ./client-view/process/linux/
 
           
       - name: Display structure of downloaded files
