@@ -106,8 +106,16 @@ jobs:
           name: build-windows-result
           path: process/win/
 
+      - name: copy process
+        run: |
+          cp ./process/win/teamwork-client-server-win.exe ./client-view/process/win/
+          cp ./process/win/externalProgram/mkcert.exe ./client-view/process/win/
+          cp ./process/linux/teamwork-client-server-win.exe ./client-view/process/linux/
+          cp ./process/linux/externalProgram/mkcert.exe ./client-view/process/linux/
+
+          
       - name: Display structure of downloaded files
-        run: ls -R
+        run: ls -R ./client-view/process
       
 
       
