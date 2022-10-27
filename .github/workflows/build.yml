@@ -31,9 +31,25 @@ jobs:
           go-version: '^1.19'
       
       - name: build client server
-        run: go build -o teamwork-client-server-${{ matrix.os }} main.go
+        working-directory: ./client-server
+        run: go mod tidy
 
-      - name: checkout client server
+      - name: build client server for macos
+        if: matrix.os == macos-latest
+        working-directory: ./client-server
+        run: CGO_ENABLED=1 go build -o teamwork-client-server-mac main.go
+      
+      - name: build client server for linux
+        if: matrix.os == ubuntu-latest
+        working-directory: ./client-server
+        run: CGO_ENABLED=1 go build -o teamwork-client-server-linux main.go
+      
+      - name: build client server for win
+        if: matrix.os == windows-latest
+        working-directory: ./client-server
+        run: CGO_ENABLED=1 go build -o teamwork-client-server-win.exe main.go
+
+      - name: checkout client view
         # run: git clone https://github.com/teamManagement/team-client-server.git
         uses: actions/checkout@v3
         with:
