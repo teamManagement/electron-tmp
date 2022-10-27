@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os: [windows-latest, ubuntu-latest]
 
     steps:
       - name: checkout client server
@@ -30,7 +30,7 @@ jobs:
         with:
           go-version: '^1.19'
       
-      - name: build client server
+      - name: mod tidy client server dependence
         working-directory: ./client-server
         run: go mod tidy
 
@@ -49,12 +49,27 @@ jobs:
         working-directory: ./client-server
         run: CGO_ENABLED=1 go build -o teamwork-client-server-win.exe main.go
 
-      - name: checkout client view
-        # run: git clone https://github.com/teamManagement/team-client-server.git
-        uses: actions/checkout@v3
-        with:
-          repository: teamManagement/team-client
-          path: client-view
+      - name: Upload linux client server and mkcert bin
+        uses: actions/upload-artifact@v3
+        if: matrix.os == 'ubuntu-latest'
+        working-directory: ./client-server
+        with: 
+          name: build-linux-result
+          path: |
+            teamwork-client-server-linux
+            externalProgram/linux/*
+
+      - name: Upload windows client server and mkcert bin
+        uses: actions/upload-artifact@v3
+        if: matrix.os == 'windows-latest'
+        working-directory: ./client-server
+        with: 
+          name: build-windows-result
+          path: |
+            teamwork-client-server-win.exe
+            externalProgram/win/*
+
+
 
       # - name: Upload build result
       #   uses: actions/upload-artifact@v3
@@ -62,7 +77,39 @@ jobs:
       #     name: build-result
       #     path: |
       #       teamwork-client-server-*
-    
+  
+  tidy-client-views:
+    needs: build-client-server
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout client view
+        # run: git clone https://github.com/teamManagement/team-client-server.git
+        uses: actions/checkout@v3
+        with:
+          repository: teamManagement/team-client
+          path: client-view  
+
+      - name: create process store dir
+        working-directory: ./client-view
+        run: |
+          rm -rf process && mkdir -p process/{linux,win,mac}
+        
+      - name: Download client server linux bin
+        uses: actions/download-artifact@v3
+        working-directory: ./client-view
+        with:
+          name: build-linux-result
+          path: process/linux/
+
+      - name: Download client server windows bin
+        uses: actions/download-artifact@v3
+        working-directory: ./client-view
+        with:
+          name: build-windows-result
+          path: process/win/
+
+      - name: Display structure of downloaded files
+        run: ls -R
       
 
       
